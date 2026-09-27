@@ -1,0 +1,1938 @@
+<!DOCTYPE html>
+
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>El Sol y la Luna ☀️🌙</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+
+*{
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    margin:0;
+    padding:0;
+    min-height:100vh;
+    overflow-x:hidden;
+    font-family:'Poppins',sans-serif;
+    background:#020617;
+    color:white;
+}
+
+/* =========================================================
+   PANTALLA INICIAL
+========================================================= */
+
+#intro-screen{
+    position:fixed;
+    inset:0;
+    z-index:9999;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    background:
+        radial-gradient(circle at 50% 35%,rgba(251,191,36,.15),transparent 28%),
+        radial-gradient(circle at 20% 80%,rgba(244,63,94,.12),transparent 30%),
+        linear-gradient(135deg,#020617,#0f172a,#1e1028);
+    transition:
+        opacity 1s ease,
+        visibility 1s ease,
+        transform 1s ease;
+}
+
+#intro-screen.hide{
+    opacity:0;
+    visibility:hidden;
+    transform:scale(1.08);
+    pointer-events:none;
+}
+
+.intro-card{
+    width:min(440px,100%);
+    padding:42px 28px;
+    text-align:center;
+    border-radius:30px;
+    background:linear-gradient(
+        135deg,
+        rgba(255,255,255,.15),
+        rgba(255,255,255,.045)
+    );
+    backdrop-filter:blur(25px);
+    -webkit-backdrop-filter:blur(25px);
+    border:1px solid rgba(255,255,255,.2);
+    box-shadow:
+        0 30px 100px rgba(0,0,0,.6),
+        inset 0 1px 0 rgba(255,255,255,.15);
+    animation:introCardIn 1.2s cubic-bezier(.16,1,.3,1);
+}
+
+@keyframes introCardIn{
+    from{
+        opacity:0;
+        transform:translateY(50px) scale(.85);
+        filter:blur(15px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0) scale(1);
+        filter:blur(0);
+    }
+}
+
+.intro-symbol{
+    width:105px;
+    height:105px;
+    margin:0 auto 25px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:45px;
+    background:linear-gradient(
+        135deg,
+        rgba(251,191,36,.25),
+        rgba(244,63,94,.25)
+    );
+    border:1px solid rgba(255,255,255,.25);
+    box-shadow:
+        0 0 30px rgba(251,191,36,.2),
+        0 0 80px rgba(244,63,94,.12);
+    animation:introSymbol 3s ease-in-out infinite;
+}
+
+@keyframes introSymbol{
+    0%,100%{
+        transform:scale(1) rotate(0deg);
+    }
+    50%{
+        transform:scale(1.08) rotate(4deg);
+    }
+}
+
+.intro-title{
+    font-family:'Dancing Script',cursive;
+    font-size:clamp(2.3rem,8vw,3.5rem);
+    background:linear-gradient(
+        90deg,
+        #fde68a,
+        #fda4af,
+        #f9a8d4
+    );
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+    animation:introGlow 3s ease-in-out infinite alternate;
+}
+
+@keyframes introGlow{
+    from{
+        filter:drop-shadow(0 0 5px rgba(251,191,36,.15));
+    }
+    to{
+        filter:drop-shadow(0 0 20px rgba(244,114,182,.4));
+    }
+}
+
+.intro-text{
+    color:rgba(255,255,255,.75);
+    font-size:.95rem;
+    line-height:1.8;
+    margin:15px 0 28px;
+}
+
+#enter-btn{
+    position:relative;
+    overflow:hidden;
+    border:0;
+    color:white;
+    cursor:pointer;
+    padding:14px 32px;
+    border-radius:999px;
+    font-size:1rem;
+    font-weight:600;
+    background:linear-gradient(
+        90deg,
+        #f43f5e,
+        #f59e0b
+    );
+    box-shadow:0 12px 35px rgba(244,63,94,.35);
+    transition:.35s ease;
+}
+
+#enter-btn::before{
+    content:"";
+    position:absolute;
+    top:0;
+    left:-120%;
+    width:60%;
+    height:100%;
+    background:rgba(255,255,255,.35);
+    transform:skewX(-20deg);
+    animation:buttonShine 3.5s ease-in-out infinite;
+}
+
+@keyframes buttonShine{
+    0%,55%{
+        left:-120%;
+    }
+    75%,100%{
+        left:150%;
+    }
+}
+
+#enter-btn:hover{
+    transform:translateY(-4px) scale(1.05);
+    box-shadow:0 18px 55px rgba(244,63,94,.5);
+}
+
+#enter-btn:active{
+    transform:scale(.96);
+}
+
+.sound-note{
+    margin-top:18px;
+    font-size:.72rem;
+    color:rgba(255,255,255,.45);
+}
+
+/* =========================================================
+   VIDEO
+========================================================= */
+
+.video-background{
+    position:fixed;
+    inset:0;
+    width:100vw;
+    height:100vh;
+    object-fit:cover;
+    z-index:-5;
+    filter:
+        brightness(.55)
+        contrast(1.1)
+        saturate(1.2);
+    transform:scale(1.08);
+    animation:videoZoom 18s ease-in-out infinite alternate;
+}
+
+@keyframes videoZoom{
+    0%{transform:scale(1.08);}
+    100%{transform:scale(1.16);}
+}
+
+/* =========================================================
+   OVERLAY
+========================================================= */
+
+.overlay{
+    position:fixed;
+    inset:0;
+    z-index:-4;
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(251,191,36,.10),
+            transparent 25%
+        ),
+        radial-gradient(
+            circle at 20% 80%,
+            rgba(244,63,94,.12),
+            transparent 30%
+        ),
+        linear-gradient(
+            to bottom,
+            rgba(2,6,23,.20),
+            rgba(2,6,23,.85)
+        );
+    animation:overlayAnimation 8s ease-in-out infinite alternate;
+}
+
+@keyframes overlayAnimation{
+    0%{opacity:.85;}
+    100%{opacity:1;}
+}
+
+/* =========================================================
+   ESTRELLAS
+========================================================= */
+
+#stars{
+    position:fixed;
+    inset:0;
+    z-index:-2;
+    pointer-events:none;
+}
+
+.star{
+    position:absolute;
+    width:2px;
+    height:2px;
+    border-radius:50%;
+    background:white;
+    animation:twinkle ease-in-out infinite;
+}
+
+@keyframes twinkle{
+    0%,100%{
+        opacity:.15;
+        transform:scale(.6);
+    }
+    50%{
+        opacity:1;
+        transform:scale(1.8);
+    }
+}
+
+/* =========================================================
+   PARTICULAS
+========================================================= */
+
+#particles-container{
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    z-index:100;
+    overflow:hidden;
+}
+
+.particle{
+    position:fixed;
+    bottom:-50px;
+    pointer-events:none;
+    animation:floatUp linear forwards;
+    text-shadow:
+        0 0 10px currentColor,
+        0 0 25px currentColor;
+}
+
+@keyframes floatUp{
+    0%{
+        transform:
+            translateY(0)
+            rotate(0deg)
+            scale(.5);
+        opacity:0;
+    }
+    15%{opacity:.9;}
+    80%{opacity:.9;}
+    100%{
+        transform:
+            translateY(-115vh)
+            rotate(360deg)
+            scale(1.2);
+        opacity:0;
+    }
+}
+
+/* =========================================================
+   ORBITA
+========================================================= */
+
+.orbit{
+    position:fixed;
+    width:360px;
+    height:360px;
+    border-radius:50%;
+    border:1px solid rgba(255,255,255,.07);
+    z-index:0;
+    pointer-events:none;
+    animation:orbitRotation 30s linear infinite;
+}
+
+.orbit::before{
+    content:"☀️";
+    position:absolute;
+    top:-18px;
+    left:50%;
+    transform:translateX(-50%);
+    font-size:24px;
+    filter:drop-shadow(
+        0 0 15px rgba(251,191,36,.9)
+    );
+}
+
+.orbit::after{
+    content:"🌙";
+    position:absolute;
+    bottom:-18px;
+    left:50%;
+    transform:translateX(-50%);
+    font-size:22px;
+    filter:drop-shadow(
+        0 0 15px rgba(125,211,252,.8)
+    );
+}
+
+@keyframes orbitRotation{
+    from{transform:rotate(0deg);}
+    to{transform:rotate(360deg);}
+}
+
+/* =========================================================
+   GLASS CARD
+========================================================= */
+
+.glass-card{
+    position:relative;
+    overflow:hidden;
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255,255,255,.15),
+            rgba(255,255,255,.045)
+        );
+    backdrop-filter:
+        blur(22px)
+        saturate(140%);
+    -webkit-backdrop-filter:
+        blur(22px)
+        saturate(140%);
+    border:1px solid rgba(255,255,255,.22);
+    box-shadow:
+        0 30px 90px rgba(0,0,0,.55),
+        inset 0 1px 0 rgba(255,255,255,.15),
+        0 0 60px rgba(244,63,94,.05);
+    animation:cardFloat 6s ease-in-out infinite;
+}
+
+.glass-card::before{
+    content:"";
+    position:absolute;
+    top:0;
+    left:-120%;
+    width:70%;
+    height:100%;
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(255,255,255,.12),
+            transparent
+        );
+    transform:skewX(-20deg);
+    animation:glassShine 8s ease-in-out infinite;
+    pointer-events:none;
+}
+
+@keyframes glassShine{
+    0%,55%{left:-120%;}
+    75%,100%{left:150%;}
+}
+
+@keyframes cardFloat{
+    0%,100%{transform:translateY(0);}
+    50%{transform:translateY(-5px);}
+}
+
+/* =========================================================
+   SOL / LUNA
+========================================================= */
+
+.sun-moon{
+    position:relative;
+    box-shadow:
+        0 0 25px rgba(251,191,36,.3),
+        0 0 60px rgba(244,63,94,.12);
+    animation:pulseSunMoon 3s ease-in-out infinite;
+}
+
+.sun-moon::before{
+    content:"";
+    position:absolute;
+    inset:-12px;
+    border-radius:50%;
+    border:1px solid rgba(255,255,255,.15);
+    animation:ringPulse 3s ease-in-out infinite;
+}
+
+@keyframes pulseSunMoon{
+    0%,100%{transform:scale(1);}
+    50%{transform:scale(1.08);}
+}
+
+@keyframes ringPulse{
+    0%,100%{
+        transform:scale(.9);
+        opacity:.25;
+    }
+    50%{
+        transform:scale(1.1);
+        opacity:.8;
+    }
+}
+
+/* =========================================================
+   TITULO
+========================================================= */
+
+.main-title{
+    animation:titleGlow 4s ease-in-out infinite alternate;
+}
+
+@keyframes titleGlow{
+    from{
+        filter:drop-shadow(
+            0 0 5px rgba(251,191,36,.15)
+        );
+    }
+    to{
+        filter:drop-shadow(
+            0 0 18px rgba(244,114,182,.35)
+        );
+    }
+}
+
+/* =========================================================
+   BOTON ABRIR
+========================================================= */
+
+#btn-open{
+    position:relative;
+    overflow:hidden;
+    box-shadow:0 12px 35px rgba(244,63,94,.25);
+    transition:.35s ease;
+}
+
+#btn-open::before{
+    content:"";
+    position:absolute;
+    top:0;
+    left:-100%;
+    width:60%;
+    height:100%;
+    background:rgba(255,255,255,.30);
+    transform:skewX(-20deg);
+    animation:buttonLight 4s ease-in-out infinite;
+}
+
+@keyframes buttonLight{
+    0%,55%{left:-100%;}
+    75%,100%{left:150%;}
+}
+
+#btn-open:hover{
+    transform:translateY(-4px) scale(1.04);
+    box-shadow:0 18px 55px rgba(244,63,94,.45);
+}
+
+#btn-open:active{
+    transform:translateY(0) scale(.97);
+}
+
+/* =========================================================
+   MUSICA
+========================================================= */
+
+#music-btn{
+    box-shadow:0 8px 30px rgba(0,0,0,.3);
+    animation:musicFloat 3s ease-in-out infinite;
+    transition:.3s ease;
+}
+
+#music-btn:hover{
+    transform:scale(1.12) rotate(8deg);
+}
+
+@keyframes musicFloat{
+    0%,100%{transform:translateY(0);}
+    50%{transform:translateY(-4px);}
+}
+
+/* =========================================================
+   TRANSICIONES
+========================================================= */
+
+.screen{
+    transition:
+        opacity .7s ease,
+        transform .7s cubic-bezier(.16,1,.3,1),
+        filter .7s ease;
+}
+
+.screen-hidden{
+    display:none !important;
+    opacity:0;
+    transform:scale(.88) translateY(30px);
+    filter:blur(10px);
+}
+
+#screen-welcome:not(.screen-hidden){
+    animation:welcomeIn 1s cubic-bezier(.16,1,.3,1) both;
+}
+
+#screen-message:not(.screen-hidden){
+    animation:messageIn 1s cubic-bezier(.16,1,.3,1) both;
+}
+
+@keyframes welcomeIn{
+    from{
+        opacity:0;
+        transform:translateY(40px) scale(.85);
+        filter:blur(12px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0) scale(1);
+        filter:blur(0);
+    }
+}
+
+@keyframes messageIn{
+    from{
+        opacity:0;
+        transform:translateY(35px) scale(.94);
+        filter:blur(10px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0) scale(1);
+        filter:blur(0);
+    }
+}
+
+/* =========================================================
+   TEXTO
+========================================================= */
+
+#screen-message .custom-scrollbar p{
+    animation:paragraphIn .8s ease both;
+}
+
+@keyframes paragraphIn{
+    from{
+        opacity:0;
+        transform:translateY(15px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+/* =========================================================
+   SCROLL
+========================================================= */
+
+.custom-scrollbar::-webkit-scrollbar{
+    width:6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track{
+    background:rgba(255,255,255,.04);
+    border-radius:10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb{
+    background:linear-gradient(#f59e0b,#f43f5e);
+    border-radius:10px;
+}
+
+/* =========================================================
+   INDICADOR
+========================================================= */
+
+.scroll-hint{
+    animation:hint 2s ease-in-out infinite;
+}
+
+@keyframes hint{
+    0%,100%{
+        transform:translateY(0);
+        opacity:.4;
+    }
+    50%{
+        transform:translateY(6px);
+        opacity:1;
+    }
+}
+
+/* =========================================================
+   CORAZONES
+========================================================= */
+
+.click-heart{
+    position:fixed;
+    pointer-events:none;
+    z-index:999;
+    animation:clickHeart 1.5s ease-out forwards;
+}
+
+@keyframes clickHeart{
+    0%{
+        opacity:1;
+        transform:
+            translate(0,0)
+            scale(.5)
+            rotate(0);
+    }
+    100%{
+        opacity:0;
+        transform:
+            translate(var(--x),var(--y))
+            scale(1.4)
+            rotate(25deg);
+    }
+}
+
+/* =========================================================
+   MOVIL
+========================================================= */
+
+@media(max-width:640px){
+
+    .orbit{
+        width:250px;
+        height:250px;
+    }
+
+    .glass-card{
+        border-radius:25px;
+    }
+
+    .video-background{
+        transform:scale(1.12);
+    }
+
+    .intro-card{
+        padding:35px 22px;
+    }
+}
+
+/* =========================================================
+   MENOS MOVIMIENTO
+========================================================= */
+
+@media(prefers-reduced-motion:reduce){
+
+    *,
+    *::before,
+    *::after{
+        animation-duration:.01ms !important;
+        animation-iteration-count:1 !important;
+        transition-duration:.01ms !important;
+    }
+}
+
+</style>
+
+</head>
+
+<body class="min-h-screen flex items-center justify-center p-4">
+
+<!-- =========================================================
+     PANTALLA INICIAL
+========================================================= -->
+
+<div id="intro-screen">
+
+```
+<div class="intro-card">
+
+    <div class="intro-symbol">
+        ☀️🌙
+    </div>
+
+    <h1 class="intro-title">
+        Tengo algo especial para ti...
+    </h1>
+
+    <p class="intro-text">
+        Hay historias que no se pueden contar
+        con unas pocas palabras.
+        <br><br>
+        Esta comienza cuando el Sol
+        encontró a la Luna.
+    </p>
+
+    <button id="enter-btn">
+        <i class="fas fa-heart"></i>
+        <span>Entrar</span>
+        <i class="fas fa-arrow-right"></i>
+    </button>
+
+    <div class="sound-note">
+        <i class="fas fa-volume-high"></i>
+        La música comenzará al entrar
+    </div>
+
+</div>
+```
+
+</div>
+
+<!-- =========================================================
+     VIDEO
+========================================================= -->
+
+<video
+ autoplay
+ loop
+ muted
+ playsinline
+ class="video-background">
+
+```
+<source
+    src="videos/video.mp4"
+    type="video/mp4">
+
+Tu navegador no soporta video HTML5.
+```
+
+</video>
+
+<!-- OSCURECER VIDEO -->
+
+<div class="overlay"></div>
+
+<!-- ESTRELLAS -->
+
+<div id="stars"></div>
+
+<!-- PARTICULAS -->
+
+<div id="particles-container"></div>
+
+<!-- ORBITA -->
+
+<div class="orbit"></div>
+
+<!-- =========================================================
+     MUSICA
+========================================================= -->
+
+<audio
+ id="bg-music"
+ loop
+ src="musica/musica.mp3"> </audio>
+
+<!-- BOTON MUSICA -->
+
+<button
+ id="music-btn"
+ class="fixed top-5 right-5 z-50
+        bg-white/20
+        hover:bg-white/30
+        text-white
+        p-3.5
+        rounded-full
+        backdrop-blur-md
+        border border-white/20"
+ title="Reproducir / Pausar música">
+
+```
+<i id="music-icon" class="fas fa-music"></i>
+```
+
+</button>
+
+<!-- =========================================================
+     INICIO
+========================================================= -->
+
+<main
+    id="screen-welcome"
+    class="screen
+           glass-card
+           rounded-3xl
+           p-6
+           sm:p-10
+           max-w-md
+           w-full
+           text-center
+           relative
+           z-10
+           border
+           border-white/20
+           my-auto">
+
+```
+<!-- SOL Y LUNA -->
+
+<div class="mb-7 inline-block">
+
+    <div
+        class="sun-moon
+               w-24
+               h-24
+               bg-gradient-to-tr
+               from-amber-500/30
+               to-rose-500/30
+               rounded-full
+               flex
+               items-center
+               justify-center
+               mx-auto
+               border
+               border-white/30">
+
+        <span class="text-4xl">
+            ☀️🌙
+        </span>
+
+    </div>
+
+</div>
+
+<!-- TITULO -->
+
+<h1
+    class="main-title
+           text-4xl
+           sm:text-5xl
+           font-bold
+           font-cursive
+           text-transparent
+           bg-clip-text
+           bg-gradient-to-r
+           from-amber-200
+           via-rose-300
+           to-pink-300
+           mb-4">
+
+    El Sol y la Luna
+
+</h1>
+
+<!-- DESCRIPCION -->
+
+<p
+    class="text-gray-200
+           text-sm
+           sm:text-base
+           font-light
+           mb-8
+           leading-relaxed">
+
+    Hay historias que necesitan
+    ser contadas despacio...
+
+    <br>
+
+    <span class="text-rose-200">
+        Tengo un detalle especial para ti.
+    </span>
+
+</p>
+
+<!-- BOTON -->
+
+<button
+    id="btn-open"
+    class="bg-gradient-to-r
+           from-rose-500
+           to-amber-500
+           hover:from-rose-600
+           hover:to-amber-600
+           text-white
+           font-medium
+           py-3.5
+           px-8
+           rounded-full
+           transition-all
+           duration-300
+           flex
+           items-center
+           justify-center
+           gap-3
+           mx-auto">
+
+    <i class="fas fa-envelope-open-text"></i>
+
+    <span>
+        Abrir Mensaje
+    </span>
+
+</button>
+
+<!-- INDICADOR -->
+
+<div
+    class="scroll-hint
+           mt-7
+           text-white/40
+           text-[10px]
+           tracking-[.25em]
+           uppercase">
+
+    <i class="fas fa-chevron-down"></i>
+
+    una historia para ti
+
+</div>
+```
+
+</main>
+
+<!-- =========================================================
+     HISTORIA
+========================================================= -->
+
+<section
+    id="screen-message"
+    class="screen
+           screen-hidden
+           glass-card
+           rounded-3xl
+           p-6
+           sm:p-8
+           max-w-2xl
+           w-full
+           relative
+           z-10
+           border
+           border-white/20
+           my-auto
+           text-center">
+
+```
+<!-- ENCABEZADO -->
+
+<div
+    class="flex
+           flex-col
+           sm:flex-row
+           items-center
+           justify-between
+           pb-4
+           mb-4
+           border-b
+           border-white/15
+           gap-3">
+
+    <div
+        class="flex
+               items-center
+               justify-center
+               gap-2
+               w-full
+               sm:w-auto">
+
+        <span class="text-2xl">
+            ☀️🌙
+        </span>
+
+        <h2
+            class="text-2xl
+                   font-bold
+                   font-cursive
+                   text-rose-300">
+
+            Una historia eterna
+
+        </h2>
+
+    </div>
+
+    <button
+        id="btn-back"
+        class="text-xs
+               bg-white/10
+               hover:bg-white/20
+               px-4
+               py-2
+               rounded-full
+               transition-all
+               border
+               border-white/20
+               flex
+               items-center
+               gap-2">
+
+        <i class="fas fa-arrow-left"></i>
+
+        Volver
+
+    </button>
+
+</div>
+
+<!-- =====================================================
+     HISTORIA
+====================================================== -->
+
+<div
+    class="custom-scrollbar
+           overflow-y-auto
+           max-h-[60vh]
+           px-2
+           sm:px-4
+           text-gray-100
+           space-y-4
+           text-sm
+           sm:text-base
+           leading-relaxed
+           font-light
+           text-center">
+
+    <p
+        class="font-cursive
+               text-2xl
+               sm:text-3xl
+               text-amber-200">
+
+        ☀️🌙 El sol y la luna ☀️🌙
+
+    </p>
+
+    <p>
+        Dicen que antes de que existieran los nombres,
+        antes de que alguien pudiera levantar los ojos
+        y llamar cielo al lugar donde vivían,
+        ya estaban ellos.
+    </p>
+
+    <p
+        class="font-medium
+               text-amber-300
+               text-lg">
+
+        El Sol y la Luna.
+
+    </p>
+
+    <p>
+        Él aprendió a amanecer mucho antes
+        de conocer la palabra amor.
+    </p>
+
+    <p>
+        Ella aprendió a aparecer en la oscuridad
+        sin saber que algún día alguien
+        la esperaría cada noche.
+    </p>
+
+    <p
+        class="italic
+               text-gray-200
+               py-2">
+
+        Pasaron millones de años.
+        <br><br>
+        Nacieron montañas.
+        <br>
+        Se secaron mares.
+        <br>
+        Los dinosaurios caminaron bajo la luz del Sol
+        <br>
+        y desaparecieron antes de que alguien
+        pudiera contarles su historia.
+
+    </p>
+
+    <p>
+        Después llegaron los hombres,
+        <br>
+        las ciudades, las guerras,
+        <br>
+        las canciones, las promesas.
+    </p>
+
+    <p>
+        Y ellos seguían allí.
+        Él, mirándola desde lejos.
+    </p>
+
+    <p>
+        Ella, cruzando el cielo como si no supiera
+        que alguien llevaba una eternidad
+        esperando verla.
+    </p>
+
+    <p>
+        El Sol se enamoró de la Luna
+        de una manera que solamente puede entender
+        alguien que ha esperado demasiado.
+    </p>
+
+    <p>
+        La amó cuando nadie estaba mirando.
+        La amó cuando el cielo estaba vacío.
+    </p>
+
+    <p>
+        La amó incluso cuando ella desaparecía
+        y dejaba la noche completamente sola.
+    </p>
+
+    <p>
+        Hasta que un día,
+        después de tantos amaneceres,
+        tantas noches y tantos siglos,
+        el Sol decidió preguntarle.
+    </p>
+
+    <p>
+        Se acercó cuanto pudo
+        y con toda la luz que tenía le dijo:
+    </p>
+
+    <p
+        class="font-cursive
+               text-2xl
+               text-amber-300
+               my-2">
+
+        — Luna, ¿te casarías conmigo?
+
+    </p>
+
+    <p>
+        Y por primera vez,
+        la Luna tuvo miedo de responder.
+    </p>
+
+    <p>
+        Porque sabía algo que él no quería escuchar:
+        si decía sí, el Sol sería tan feliz
+        que quizá su corazón no podría contener
+        tanta luz.
+    </p>
+
+    <p>
+        Y si decía no,
+        su tristeza sería tan grande
+        que hasta el fuego podría convertirse en hielo.
+    </p>
+
+    <p>
+        Entonces la Luna miró hacia él
+        y respondió:
+    </p>
+
+    <p
+        class="font-cursive
+               text-2xl
+               text-sky-200
+               my-2">
+
+        — No sé.
+
+    </p>
+
+    <p>
+        Y el universo siguió girando.
+    </p>
+
+    <p>
+        El Sol esperó.
+        Quizá pensó que ella necesitaba tiempo.
+        Y la esperó.
+        Esperó una noche.
+        Luego otra.
+        Después un año.
+        Después otro.
+    </p>
+
+    <p>
+        Pero los años se convirtieron en siglos,
+        y los siglos en historias.
+    </p>
+
+    <p
+        class="text-rose-300
+               font-medium
+               my-2">
+
+        Y cada vez que el mundo se olvidaba de ellos,
+        llegaba un eclipse. 🌑
+
+    </p>
+
+    <p>
+        Ese era su pequeño milagro.
+        Por unos minutos,
+        el cielo dejaba de ser distancia.
+        La Luna pasaba frente al Sol
+        y él podía verla un poco más cerca.
+    </p>
+
+    <p>
+        Entonces,
+        como si jamás hubiera pasado el tiempo,
+        él volvía a preguntarle:
+    </p>
+
+    <p
+        class="font-cursive
+               text-2xl
+               text-amber-300
+               my-2">
+
+        — ¿Y ya lo pensaste?
+
+    </p>
+
+    <p>
+        Ella permanecía en silencio.
+        No porque no lo amara.
+        Quizá ese era precisamente el problema.
+    </p>
+
+    <p>
+        Porque amar a alguien no siempre significa
+        saber qué hacer con ese amor.
+        A veces significa tenerlo entre las manos
+        y no saber si abrazarlo
+        o dejarlo volar.
+    </p>
+
+    <p>
+        Así que la Luna volvía a responder:
+    </p>
+
+    <p
+        class="font-cursive
+               text-2xl
+               text-sky-200
+               my-2">
+
+        — Todavía no sé.
+
+    </p>
+
+    <p>
+        Y el eclipse terminaba.
+        El Sol volvía a su lado del cielo.
+        La Luna regresaba a la noche.
+        Y otra vez quedaban separados.
+    </p>
+
+    <p>
+        Pero él nunca dejó de preguntar.
+        Porque hay amores que no necesitan
+        una respuesta inmediata para seguir existiendo.
+        Hay amores que sobreviven
+        porque alguien continúa esperando.
+    </p>
+
+    <p>
+        Y quizá eso era lo más hermoso
+        y también lo más triste:
+        que el Sol nunca dejó de amarla
+        aunque jamás tuvo la certeza
+        de que algún día ella diría que sí.
+    </p>
+
+    <p>
+        Y la Luna nunca dejó de volver
+        aunque jamás pudo decirle que sí.
+    </p>
+
+    <p>
+        Millones de años después,
+        cuando alguien mira un eclipse
+        y piensa que solamente está viendo
+        cómo la Luna cubre al Sol,
+        quizá no está viendo un fenómeno.
+    </p>
+
+    <p>
+        Quizá está viendo una conversación
+        que lleva demasiado tiempo sucediendo.
+    </p>
+
+    <p>
+        Quizá está viendo al Sol acercarse
+        una vez más con la misma pregunta de siempre.
+        Y a la Luna,
+        con esa respuesta que todavía tiembla
+        entre sus labios:
+    </p>
+
+    <p
+        class="font-cursive
+               text-3xl
+               text-pink-300
+               my-3">
+
+        "Tal vez"
+
+    </p>
+
+    <p>
+        Tal vez algún día cambie.
+        Tal vez nunca lo haga.
+    </p>
+
+    <p>
+        Tal vez el amor de ellos
+        no estaba destinado a terminar en una boda,
+        sino a encontrarse de vez en cuando
+        en medio de la inmensidad.
+    </p>
+
+    <p>
+        Porque quizá amar también es eso:
+        seguir mirando a alguien desde lejos
+        sin dejar que la distancia
+        te convenza de que nunca estuvo cerca.
+    </p>
+
+    <p>
+        Y mientras existan amaneceres,
+        mientras existan noches,
+        mientras haya alguien capaz
+        de levantar los ojos
+        y buscar una pequeña luz en el cielo,
+        el Sol seguirá preguntando.
+        La Luna seguirá pensando.
+    </p>
+
+    <p>
+        Y el universo,
+        paciente,
+        seguirá guardando aquel secreto
+        entre sus estrellas.
+    </p>
+
+    <!-- FRASE DESTACADA -->
+
+    <div
+        class="bg-white/10
+               p-5
+               rounded-2xl
+               border
+               border-white/20
+               my-7
+               text-center
+               space-y-3
+               max-w-sm
+               mx-auto
+               shadow-xl">
+
+        <p
+            class="font-medium
+                   text-amber-200">
+
+            ☀️ "¿Ya lo pensaste?"
+
+        </p>
+
+        <p
+            class="font-medium
+                   text-sky-200">
+
+            🌙 "Todavía no sé."
+
+        </p>
+
+    </div>
+
+    <p>
+        Y entonces llegará otro eclipse.
+    </p>
+
+    <p>
+        Y durante unos minutos
+        el cielo parecerá olvidar
+        que ellos estaban destinados
+        a permanecer separados.
+    </p>
+
+    <p
+        class="font-medium
+               text-rose-200">
+
+        Solo unos minutos.
+        Pero para dos corazones
+        que llevan millones de años esperando,
+        quizá unos minutos sean suficientes.
+
+    </p>
+
+</div>
+
+<!-- FINAL -->
+
+<div
+    class="mt-5
+           pt-4
+           border-t
+           border-white/15
+           text-center
+           text-rose-300
+           font-cursive
+           text-xl">
+
+    ✨ Con todo mi cariño para ti ✨
+
+</div>
+```
+
+</section>
+
+<!-- =========================================================
+     JAVASCRIPT
+========================================================= -->
+
+<script>
+
+const introScreen =
+    document.getElementById("intro-screen");
+
+const enterBtn =
+    document.getElementById("enter-btn");
+
+const btnOpen =
+    document.getElementById("btn-open");
+
+const btnBack =
+    document.getElementById("btn-back");
+
+const screenWelcome =
+    document.getElementById("screen-welcome");
+
+const screenMessage =
+    document.getElementById("screen-message");
+
+const musicBtn =
+    document.getElementById("music-btn");
+
+const musicIcon =
+    document.getElementById("music-icon");
+
+const bgMusic =
+    document.getElementById("bg-music");
+
+const particles =
+    document.getElementById("particles-container");
+
+const stars =
+    document.getElementById("stars");
+
+let isPlaying = false;
+
+
+/* =========================================================
+   ESTRELLAS
+========================================================= */
+
+function createStars(){
+
+    for(let i=0;i<100;i++){
+
+        const star =
+            document.createElement("span");
+
+        star.className="star";
+
+        star.style.left =
+            Math.random()*100+"vw";
+
+        star.style.top =
+            Math.random()*100+"vh";
+
+        const size =
+            Math.random()*2+1;
+
+        star.style.width =
+            size+"px";
+
+        star.style.height =
+            size+"px";
+
+        star.style.animationDuration =
+            (2+Math.random()*4)+"s";
+
+        star.style.animationDelay =
+            Math.random()*5+"s";
+
+        stars.appendChild(star);
+    }
+}
+
+createStars();
+
+
+/* =========================================================
+   PARTICULAS
+========================================================= */
+
+const icons = [
+    "fa-heart",
+    "fa-star",
+    "fa-moon",
+    "fa-sun"
+];
+
+function createParticle(){
+
+    const particle =
+        document.createElement("i");
+
+    const randomIcon =
+        icons[
+            Math.floor(
+                Math.random()*icons.length
+            )
+        ];
+
+    particle.className =
+        "fas "+randomIcon+" particle";
+
+    const size =
+        Math.random()*15+8;
+
+    particle.style.fontSize =
+        size+"px";
+
+    particle.style.left =
+        Math.random()*100+"vw";
+
+    particle.style.color =
+        Math.random()>.5
+        ? "#fcd34d"
+        : "#fb7185";
+
+    const duration =
+        Math.random()*7+6;
+
+    particle.style.animationDuration =
+        duration+"s";
+
+    particles.appendChild(particle);
+
+    setTimeout(()=>{
+        particle.remove();
+    },duration*1000);
+}
+
+setInterval(createParticle,450);
+
+
+/* =========================================================
+   ACTUALIZAR BOTON DE MUSICA
+========================================================= */
+
+function musicOn(){
+
+    isPlaying=true;
+
+    musicIcon.className="fas fa-pause";
+
+    musicBtn.classList.add(
+        "bg-rose-500/50"
+    );
+}
+
+function musicOff(){
+
+    isPlaying=false;
+
+    musicIcon.className="fas fa-music";
+
+    musicBtn.classList.remove(
+        "bg-rose-500/50"
+    );
+}
+
+
+/* =========================================================
+   PANTALLA INICIAL
+========================================================= */
+
+enterBtn.addEventListener("click",async()=>{
+
+    /*
+       Esta interacción permite que Chrome
+       autorice la reproducción con sonido.
+    */
+
+    try{
+
+        bgMusic.volume=0.75;
+
+        await bgMusic.play();
+
+        musicOn();
+
+    }catch(error){
+
+        console.log(
+            "No se pudo iniciar la música:",
+            error
+        );
+
+    }
+
+    introScreen.classList.add("hide");
+
+    setTimeout(()=>{
+
+        screenWelcome.classList.remove(
+            "screen-hidden"
+        );
+
+    },300);
+
+    createExplosion(
+        window.innerWidth/2,
+        window.innerHeight/2
+    );
+
+});
+
+
+/* =========================================================
+   ABRIR HISTORIA
+========================================================= */
+
+btnOpen.addEventListener("click",async()=>{
+
+    screenWelcome
+        .classList
+        .add("screen-hidden");
+
+    screenMessage
+        .classList
+        .remove("screen-hidden");
+
+    try{
+
+        if(bgMusic.paused){
+
+            await bgMusic.play();
+
+            musicOn();
+        }
+
+    }catch(error){
+
+        console.log(
+            "El navegador requiere interacción."
+        );
+
+    }
+
+    createExplosion(
+        window.innerWidth/2,
+        window.innerHeight/2
+    );
+
+});
+
+
+/* =========================================================
+   VOLVER
+========================================================= */
+
+btnBack.addEventListener("click",()=>{
+
+    screenMessage
+        .classList
+        .add("screen-hidden");
+
+    screenWelcome
+        .classList
+        .remove("screen-hidden");
+
+});
+
+
+/* =========================================================
+   BOTON MUSICA
+========================================================= */
+
+musicBtn.addEventListener(
+    "click",
+    async()=>{
+
+        if(bgMusic.paused){
+
+            try{
+
+                await bgMusic.play();
+
+                musicOn();
+
+            }catch(error){
+
+                console.log(error);
+
+            }
+
+        }else{
+
+            bgMusic.pause();
+
+            musicOff();
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   EXPLOSION DE PARTICULAS
+========================================================= */
+
+function createExplosion(x,y){
+
+    for(let i=0;i<25;i++){
+
+        const heart =
+            document.createElement("i");
+
+        heart.className =
+            "fas fa-heart click-heart";
+
+        heart.style.left =
+            x+"px";
+
+        heart.style.top =
+            y+"px";
+
+        heart.style.color =
+            Math.random()>.5
+            ? "#fb7185"
+            : "#fcd34d";
+
+        heart.style.setProperty(
+            "--x",
+            (Math.random()-.5)*300+"px"
+        );
+
+        heart.style.setProperty(
+            "--y",
+            (Math.random()-.5)*300+"px"
+        );
+
+        particles.appendChild(heart);
+
+        setTimeout(()=>{
+            heart.remove();
+        },1500);
+
+    }
+
+}
+
+
+/* =========================================================
+   CORAZON AL HACER CLICK
+========================================================= */
+
+document.addEventListener(
+    "click",
+    (event)=>{
+
+        if(
+            event.target.closest("button")
+        ){
+            return;
+        }
+
+        const heart =
+            document.createElement("i");
+
+        heart.className =
+            "fas fa-heart click-heart";
+
+        heart.style.left =
+            event.clientX+"px";
+
+        heart.style.top =
+            event.clientY+"px";
+
+        heart.style.color="#fb7185";
+
+        heart.style.setProperty(
+            "--x",
+            (Math.random()-.5)*100+"px"
+        );
+
+        heart.style.setProperty(
+            "--y",
+            "-80px"
+        );
+
+        particles.appendChild(heart);
+
+        setTimeout(()=>{
+            heart.remove();
+        },1500);
+
+    }
+);
+
+
+/* =========================================================
+   EFECTO DEL MOUSE
+========================================================= */
+
+window.addEventListener(
+    "mousemove",
+    (event)=>{
+
+        const active =
+            document.querySelector(
+                ".screen:not(.screen-hidden)"
+            );
+
+        if(
+            !active ||
+            window.innerWidth<700
+        ){
+            return;
+        }
+
+        const x =
+            event.clientX/
+            window.innerWidth-.5;
+
+        const y =
+            event.clientY/
+            window.innerHeight-.5;
+
+        active.style.transform =
+            `translate(
+                ${x*5}px,
+                ${y*5}px
+            )`;
+
+    }
+);
+
+
+/* =========================================================
+   ESC PARA VOLVER
+========================================================= */
+
+document.addEventListener(
+    "keydown",
+    (event)=>{
+
+        if(
+            event.key==="Escape" &&
+            !screenMessage
+                .classList
+                .contains("screen-hidden")
+        ){
+
+            btnBack.click();
+
+        }
+
+    }
+);
+
+</script>
+
+</body>
+</html>
